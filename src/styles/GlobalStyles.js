@@ -31,7 +31,7 @@ const GlobalStyles = createGlobalStyle`
   padding: 0;
   margin: 0;
 
-  transition: background-color 0.3s, border 0.3s;
+  transition: background-color 0.5s, border 0.5s; /* Changed transition duration to 0.5s */
 }
 
 html {
@@ -45,7 +45,7 @@ body {
   font-family: "Poppins", sans-serif;
   color: var(--color-grey-700);
 
-  transition: color 0.3s, background-color 0.3s;
+  transition: color 0.5s, background-color 0.5s; /* Changed transition duration to 0.5s */
   min-height: 100vh;
   line-height: 1.5;
   font-size: 1.6rem;
@@ -109,7 +109,17 @@ img {
   max-width: 100%;
 }
 
-
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  10% {
+    transform: translateY(-5px);
+  }
+  40%, 60% {
+    transform: translateY(-10px);
+  }
+}
 `;
 
 export default GlobalStyles;

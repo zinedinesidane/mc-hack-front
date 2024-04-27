@@ -5,6 +5,8 @@ import Button from "../ui/Button";
 import ButtonGroup from "../ui/ButtonGroup";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import { useForm } from "react-hook-form";
+import { registerUser } from "../api/authentification";
 
 const StyledSignup = styled.div`
   display: grid;
@@ -12,8 +14,8 @@ const StyledSignup = styled.div`
   background-color: #f6f6ff;
   column-gap: 4rem;
   padding-right: 6rem;
-  margin-inline: auto;
-  max-width: 85%;
+  margin: 5rem auto;
+  max-width: 75%;
   align-items: center;
 `;
 const StyledForm = styled.form`
@@ -95,6 +97,12 @@ const StyledLink = styled(Link)`
 `;
 
 function Signup() {
+  const { register, handleSubmit } = useForm();
+
+  const onSubmitFn = (data) => {
+    console.log("data", data);
+    registerUser(data).then((res) => console.log(res));
+  };
   return (
     <StyledSignup>
       <StyledBox>
@@ -104,7 +112,7 @@ function Signup() {
           <p>Wedoc are happy that you are joinning us</p>
         </div>
       </StyledBox>
-      <StyledForm>
+      <StyledForm onSubmit={handleSubmit(onSubmitFn)}>
         <Box display="flex" alignItems="center" gap="1rem">
           <Heading style={{ marginBottom: "3rem" }} size="h2">
             Sign up to <span style={{ color: "#2500BB" }}>Wedoc</span>{" "}
@@ -115,20 +123,24 @@ function Signup() {
           <Box display="flex" alignItems="center" gap="3rem">
             <FormGroup>
               <label htmlFor="accName">Account Name</label>
-              <input placeholder="Enter your name" type="text" id="accName" />
+              <input {...register("accName")} placeholder="Enter your name" type="text" id="accName" />
             </FormGroup>
             <FormGroup>
               <label htmlFor="companyName">Company Name</label>
-              <input placeholder="Enter your company name" type="text" id="companyName" />
+              <input {...register("companyName")} placeholder="Enter your company name" type="text" id="companyName" />
             </FormGroup>
           </Box>
           <FormGroup>
             <label htmlFor="email">Email</label>
-            <input placeholder="Enter your email adress" type="email" id="email" />
+            <input {...register("email")} placeholder="Enter your email adress" type="email" id="email" />
           </FormGroup>
           <FormGroup>
             <label htmlFor="password">Password</label>
-            <input placeholder="Enter your password" type="password" id="password" />
+            <input {...register("password")} placeholder="Enter your password" type="password" id="password" />
+          </FormGroup>
+          <FormGroup>
+            <label htmlFor="confirmpassword">Confirm Password</label>
+            <input {...register("confirmpassword")} placeholder="Confirm your password" type="password" id="password" />
           </FormGroup>
           <Box display="flex" alignItems="center" gap=".6rem">
             <Checkbox />

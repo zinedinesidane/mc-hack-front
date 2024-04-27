@@ -3,23 +3,24 @@ import Heading from "../ui/Heading";
 import { Box, Checkbox } from "@mui/material";
 import Button from "../ui/Button";
 import ButtonGroup from "../ui/ButtonGroup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import { useForm } from "react-hook-form";
+import { login } from "../api/authentification";
 
-const StyledSignup = styled.div`
+const StyledLogin = styled.div`
   display: grid;
   grid-template-columns: 1.6fr 1.4fr;
   background-color: #f6f6ff;
   column-gap: 4rem;
   padding-left: 6rem;
   align-items: center;
-  max-width: 80%;
-  margin-inline: auto;
+  max-width: 70%;
+  margin: 5rem auto;
 `;
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   gap: 1rem;
   height: 100%;
   justify-content: center;
@@ -80,30 +81,45 @@ const StyledLink = styled(Link)`
 `;
 
 function Login() {
+  const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
+
+  const onSubmitFn = (data) => {
+    login(data).then((res) => {
+      if (res?.success) {
+        localStorage.setItem("token", res.token);
+        navigate("/customization");
+      }
+      console.log(res);
+    });
+  };
+
   return (
-    <StyledSignup>
-      <StyledForm>
+    <StyledLogin>
+      <StyledForm onSubmit={handleSubmit(onSubmitFn)}>
         <Box display="flex" alignItems="center" alignSelf="center" gap="1rem">
           <Heading style={{ marginBottom: "3rem" }} size="h2">
-            Sign in to <span style={{ color: "#2500BB" }}>Wedoc</span>{" "}
+            Sign in to <span style={{ color: "#2500BB" }}>WorkUIQ</span>{" "}
           </Heading>
         </Box>
         <FormBody>
           <FormGroup>
-            <label htmlFor="accName">Account Name</label>
-            <input placeholder="Enter your name" type="text" id="accName" />
+            <label htmlFor="email">Email</label>
+            <input {...register("email")} placeholder="Enter your email adress" type="text" id="email" />
           </FormGroup>
 
           <FormGroup>
             <label htmlFor="password">Password</label>
-            <input placeholder="Enter your password" type="password" id="password" />
+            <input {...register("password")} placeholder="Enter your password" type="password" id="password" />
           </FormGroup>
           <Box display="flex" alignItems="center" gap=".6rem">
             <Checkbox />
             <span>Keep me sign up</span>
           </Box>
           <StyledButtonGroup>
-            <Button size="large">Log in</Button>
+            <Button type="submit" size="large">
+              Log in
+            </Button>
             <span>or</span>
             <Button
               style={{
@@ -122,14 +138,14 @@ function Login() {
           </StyledButtonGroup>
           <Box display="flex" alignItems="center" gap=".8rem" mt="1rem">
             <span>{`Don't have an account ?`}</span>
-            <StyledLink to="/sign">Sign in</StyledLink>
+            <StyledLink to="/signup">Sign in</StyledLink>
           </Box>
         </FormBody>
       </StyledForm>
       <StyledBox>
         <img src="/loginImg.png" alt="Login img" />
       </StyledBox>
-    </StyledSignup>
+    </StyledLogin>
   );
 }
 
